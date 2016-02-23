@@ -1,0 +1,27 @@
+project(':SleepTrackerDaoGenerator') {
+    apply plugin: 'application'
+    apply plugin: 'java'
+
+    mainClassName = "com.og.health.sleeptracker.DatabaseGenerator"
+    // edit output direction
+    def outputDir = "../app/src/main/java-gen"
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        compile fileTree(dir: 'libs', include: ['*.jar'])
+        //See main gradle file on how to use this specific version of greendao
+        compile 'de.greenrobot:greendao-generator:2.0.0-SQLCIPHER-3.3.1-2'
+    }
+
+    task createDocs {
+        def docs = file(outputDir)
+        docs.mkdirs()
+    }
+
+    run {
+        args outputDir
+    }
+}
