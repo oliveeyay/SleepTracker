@@ -19,6 +19,7 @@ import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
+import com.crashlytics.android.Crashlytics;
 import com.og.health.sleeptracker.db.SleepTrackerDatabaseImpl;
 import com.og.health.sleeptracker.db.UpgradeHelper;
 import com.og.health.sleeptracker.lib.db.SleepTrackerDatabaseUtilities;
@@ -26,6 +27,7 @@ import com.og.health.sleeptracker.schema.DaoMaster;
 import com.og.health.sleeptracker.schema.DaoSession;
 import com.og.health.sleeptracker.utilities.SharedPreferencesUtils;
 
+import io.fabric.sdk.android.Fabric;
 import net.sqlcipher.database.SQLiteDatabase;
 
 /**
@@ -58,6 +60,7 @@ public class SleepTrackerApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
 
         mContext = getApplicationContext();
         setupDatabase(getApplicationContext());

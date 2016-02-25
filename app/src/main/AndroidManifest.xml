@@ -19,6 +19,10 @@
 
         <activity android:name=".activities.ChartActivity" />
 
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="3274f0df4969fff2fcfce54765f4d96b095f2e25" />
     </application>
 
+    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>
