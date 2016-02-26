@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.og.health.sleeptracker">
 
+    <!--Google analytics-->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:name=".application.SleepTrackerApplication"
         android:allowBackup="false"
@@ -17,6 +21,9 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".activities.DimActivity" />
+
         <activity android:name=".activities.ChartActivity" />
 
         <meta-data
@@ -24,5 +31,4 @@
             android:value="3274f0df4969fff2fcfce54765f4d96b095f2e25" />
     </application>
 
-    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

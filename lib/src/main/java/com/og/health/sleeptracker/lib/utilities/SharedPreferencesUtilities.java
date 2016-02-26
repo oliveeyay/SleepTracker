@@ -103,11 +103,11 @@ public class SharedPreferencesUtilities {
     }
 
     /**
-     * Store a boolean into the private {@link SharedPreferences} of the app.
+     * Store a long into the private {@link SharedPreferences} of the app.
      *
      * @param context The current context of the app
      * @param key     The key we want to be used to store the string
-     * @param value   The boolean we want to be stored
+     * @param value   The long we want to be stored
      */
     public static void storeLongForKey(Context context, String key, long value) {
         if (context == null) {
@@ -120,11 +120,11 @@ public class SharedPreferencesUtilities {
     }
 
     /**
-     * Get a boolean from the private {@link SharedPreferences} of the app
+     * Get a long from the private {@link SharedPreferences} of the app
      *
      * @param context The current context of the app
      * @param key     The key we want to request
-     * @return The boolean retrieved from the given key
+     * @return The long retrieved from the given key
      */
     public static long getLongForKey(Context context, String key) {
         if (context == null) {
@@ -132,6 +132,38 @@ public class SharedPreferencesUtilities {
         }
         SharedPreferences sharedPref = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
         return sharedPref.getLong(key, 0);
+    }
+
+    /**
+     * Store a float into the private {@link SharedPreferences} of the app.
+     *
+     * @param context The current context of the app
+     * @param key     The key we want to be used to store the string
+     * @param value   The float we want to be stored
+     */
+    public static void storeFloatForKey(Context context, String key, float value) {
+        if (context == null) {
+            return;
+        }
+        SharedPreferences sharedPref = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putFloat(key, value);
+        editor.apply();
+    }
+
+    /**
+     * Get a float from the private {@link SharedPreferences} of the app
+     *
+     * @param context The current context of the app
+     * @param key     The key we want to request
+     * @return The float retrieved from the given key
+     */
+    public static float getFloatForKey(Context context, String key) {
+        if (context == null) {
+            return 0f;
+        }
+        SharedPreferences sharedPref = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        return sharedPref.getFloat(key, 0f);
     }
 
     /**

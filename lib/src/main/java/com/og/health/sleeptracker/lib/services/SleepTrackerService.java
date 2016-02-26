@@ -25,19 +25,15 @@ import android.hardware.SensorManager;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.widget.TextView;
 
-import com.og.health.sleeptracker.lib.db.SleepTrackerDatabaseUtilities;
 import com.og.health.sleeptracker.lib.db.AbstractSleepTrackerDatabase;
+import com.og.health.sleeptracker.lib.db.SleepTrackerDatabaseUtilities;
 
 /**
  * Created by olivier.goutay on 2/17/16.
  * Listen to the accelerometer to track your sleep.
  */
 public class SleepTrackerService extends Service implements SensorEventListener {
-
-    //TODO delete after when storing data in db and showing in chart
-    private static TextView textView;
 
     private static final String TAG = "SleepTrackerService";
 
@@ -123,20 +119,10 @@ public class SleepTrackerService extends Service implements SensorEventListener 
             mPreviousZ = values[2];
         }
 
-        if (textView != null && somethingChanged) {
-            String sensorValues = "x: " + mPreviousX + "y: " + mPreviousY + "z: " + mPreviousZ;
-            textView.setText(sensorValues);
-        }
-
         //Store in db
         AbstractSleepTrackerDatabase abstractSleepTrackerDatabase = SleepTrackerDatabaseUtilities.getDatabaseClass(context);
         if (abstractSleepTrackerDatabase != null && somethingChanged) {
             abstractSleepTrackerDatabase.storeSleepMovementData(values);
         }
-    }
-
-    //TODO delete after when storing data in db and showing in chart
-    public static synchronized void setTextView(TextView textView) {
-        SleepTrackerService.textView = textView;
     }
 }

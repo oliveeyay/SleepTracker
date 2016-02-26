@@ -37,6 +37,11 @@ public final class SharedPreferencesUtils extends com.og.health.sleeptracker.lib
      */
     public static final String SEED_KEY = "SLEEP_TRACKER_SEED_KEY";
 
+    /**
+     * The key to save the previous dim value
+     */
+    public static final String SCREEN_DIM_VALUE = "SCREEN_DIM_VALUE";
+
     private SharedPreferencesUtils() {
     }
 

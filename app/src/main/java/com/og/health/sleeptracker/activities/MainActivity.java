@@ -41,34 +41,12 @@ public class MainActivity extends AppCompatActivity {
         BootCompletedReceiver.startScreenOnOffService(this);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        SleepTrackerService.setTextView(mBinding.mainActivityTextview);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        SleepTrackerService.setTextView(null);
-    }
-
     /**
      * Start the {@link SleepTrackerService} on click {@link com.og.health.sleeptracker.databinding.ActivityMainBinding#mainActivityStartButton}
      */
-    public void startService(View view) {
-        SleepTrackerService.setTextView(mBinding.mainActivityTextview);
-        Intent intent = new Intent(this, SleepTrackerService.class);
-        startService(intent);
-    }
-
-    /**
-     * Stop the {@link SleepTrackerService} on click {@link com.og.health.sleeptracker.databinding.ActivityMainBinding#mainActivityStopButton}
-     */
-    public void stopService(View view) {
-        SleepTrackerService.setTextView(null);
-        Intent intent = new Intent(this, SleepTrackerService.class);
-        stopService(intent);
+    public void startDimActivity(View view) {
+        Intent intentDim = new Intent(this, DimActivity.class);
+        startActivity(intentDim);
     }
 
     /**
