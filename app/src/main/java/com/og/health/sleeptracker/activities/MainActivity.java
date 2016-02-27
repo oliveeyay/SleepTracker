@@ -25,6 +25,7 @@ import com.og.health.sleeptracker.R;
 import com.og.health.sleeptracker.databinding.ActivityMainBinding;
 import com.og.health.sleeptracker.lib.receivers.BootCompletedReceiver;
 import com.og.health.sleeptracker.lib.services.SleepTrackerService;
+import com.og.health.sleeptracker.utilities.AnimationUtilities;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,10 +42,16 @@ public class MainActivity extends AppCompatActivity {
         BootCompletedReceiver.startScreenOnOffService(this);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mBinding.mainActivityCircularLayout.setVisibility(View.INVISIBLE);
+    }
+
     /**
      * Start the {@link SleepTrackerService} on click {@link com.og.health.sleeptracker.databinding.ActivityMainBinding#mainActivityStartButton}
      */
-    public void startDimActivity(View view) {
+    public void startClicked(View view) {
         Intent intentDim = new Intent(this, DimActivity.class);
         startActivity(intentDim);
     }
@@ -52,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Launches {@link WakeUpChartActivity} on click {@link com.og.health.sleeptracker.databinding.ActivityMainBinding#mainActivitySleepChartButton}
      */
-    public void sleepChart(View view) {
+    public void sleepChartClicked(View view) {
         Intent intent = new Intent(this, SleepChartActivity.class);
         startActivity(intent);
     }
@@ -60,9 +67,17 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Launches {@link WakeUpChartActivity} on click {@link com.og.health.sleeptracker.databinding.ActivityMainBinding#mainActivityWakeupChartButton}
      */
-    public void wakeUpChart(View view) {
+    public void wakeUpChartClicked(View view) {
         Intent intent = new Intent(this, WakeUpChartActivity.class);
         startActivity(intent);
+    }
+
+    /**
+     * Launches {@link AlarmActivity} on click {@link com.og.health.sleeptracker.databinding.ActivityMainBinding#mainActivityAlarmButton}
+     */
+    public void alarmButtonClicked(View view) {
+        Intent intent = new Intent(this, AlarmActivity.class);
+        AnimationUtilities.animateTransitionCircularView(this, mBinding.mainActivityCircularLayout, mBinding.mainActivityAlarmButton, 0, intent);
     }
 
 }

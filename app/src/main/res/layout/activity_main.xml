@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data></data>
@@ -7,37 +8,60 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
         tools:context=".activities.MainActivity">
 
-        <Button
-            android:id="@+id/main_activity_start_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:onClick="startDimActivity"
-            android:text="@string/activity_main_start_button" />
 
-        <Button
-            android:id="@+id/main_activity_sleep_chart_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/main_activity_start_button"
-            android:layout_centerHorizontal="true"
-            android:onClick="sleepChart"
-            android:text="@string/activity_main_sleep_button" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin">
 
-        <Button
-            android:id="@+id/main_activity_wakeup_chart_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/main_activity_sleep_chart_button"
-            android:layout_centerHorizontal="true"
-            android:onClick="wakeUpChart"
-            android:text="@string/activity_main_wake_up_button" />
+            <Button
+                android:id="@+id/main_activity_start_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:onClick="startClicked"
+                android:text="@string/activity_main_start_button" />
 
+            <Button
+                android:id="@+id/main_activity_sleep_chart_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/main_activity_start_button"
+                android:layout_centerHorizontal="true"
+                android:onClick="sleepChartClicked"
+                android:text="@string/activity_main_sleep_button" />
+
+            <Button
+                android:id="@+id/main_activity_wakeup_chart_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/main_activity_sleep_chart_button"
+                android:layout_centerHorizontal="true"
+                android:onClick="wakeUpChartClicked"
+                android:text="@string/activity_main_wake_up_button" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/main_activity_alarm_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:onClick="alarmButtonClicked"
+                app:elevation="4dp" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/main_activity_circular_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/orange_800"
+            android:orientation="horizontal"
+            android:visibility="invisible" />
     </RelativeLayout>
 </layout>
