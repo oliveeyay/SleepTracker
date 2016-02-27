@@ -16,13 +16,14 @@
 package com.og.health.sleeptracker.charts;
 
 import com.github.mikephil.charting.data.Entry;
+import com.og.health.sleeptracker.activities.WakeUpChartActivity;
 
 import java.util.List;
 
 /**
  * Created by olivier.goutay on 2/18/16.
  * Used to store a list of {@link Entry} and a list of {@link String}
- * to display in {@link com.og.health.sleeptracker.activities.ChartActivity}
+ * to display in {@link WakeUpChartActivity}
  */
 public class ChartValue {
 

@@ -26,8 +26,11 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.og.health.sleeptracker.lib.application.SleepTrackerApplication;
 import com.og.health.sleeptracker.lib.db.AbstractSleepTrackerDatabase;
-import com.og.health.sleeptracker.lib.db.SleepTrackerDatabaseUtilities;
+import com.og.health.sleeptracker.lib.db.SleepTrackerDatabaseImpl;
+import com.og.health.sleeptracker.schema.Record;
+import com.og.health.sleeptracker.schema.RecordDao;
 
 /**
  * Created by olivier.goutay on 2/17/16.
@@ -54,6 +57,11 @@ public class SleepTrackerService extends Service implements SensorEventListener 
      * The {@link SensorManager} used to listen to {@link Sensor#TYPE_ACCELEROMETER}
      */
     private SensorManager mSensorManager;
+
+    /**
+     * The current {@link Record} being tracked
+     */
+    private Record mRecord;
 
     @Nullable
     @Override
@@ -90,7 +98,7 @@ public class SleepTrackerService extends Service implements SensorEventListener 
     @Override
     public void onSensorChanged(SensorEvent event) {
         if (event != null && event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-            handleOnSensorChanged(getApplicationContext(), event.values);
+            handleOnSensorChanged(event.values);
         }
     }
 
@@ -102,7 +110,7 @@ public class SleepTrackerService extends Service implements SensorEventListener 
     /**
      * Handles the informations received by {@link #onSensorChanged(SensorEvent)}
      */
-    public void handleOnSensorChanged(Context context, float[] values) {
+    public void handleOnSensorChanged(float[] values) {
         boolean somethingChanged = false;
 
         //Show text
@@ -120,9 +128,21 @@ public class SleepTrackerService extends Service implements SensorEventListener 
         }
 
         //Store in db
-        AbstractSleepTrackerDatabase abstractSleepTrackerDatabase = SleepTrackerDatabaseUtilities.getDatabaseClass(context);
-        if (abstractSleepTrackerDatabase != null && somethingChanged) {
-            abstractSleepTrackerDatabase.storeSleepMovementData(values);
+        AbstractSleepTrackerDatabase abstractSleepTrackerDatabase = new SleepTrackerDatabaseImpl();
+        if (somethingChanged) {
+            abstractSleepTrackerDatabase.storeSleepMovementData(getRecord(), values);
         }
+    }
+
+    /**
+     * Returns the current {@link Record} being tracked
+     */
+    private Record getRecord() {
+        if (mRecord == null) {
+            RecordDao recordDao = SleepTrackerApplication.getDaoSession().getRecordDao();
+            mRecord = recordDao.queryBuilder().limit(1).orderDesc(RecordDao.Properties.Beginning).unique();
+        }
+
+        return mRecord;
     }
 }

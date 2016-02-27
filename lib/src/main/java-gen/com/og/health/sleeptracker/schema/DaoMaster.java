@@ -8,6 +8,7 @@ import android.util.Log;
 import de.greenrobot.dao.AbstractDaoMaster;
 import de.greenrobot.dao.identityscope.IdentityScopeType;
 
+import com.og.health.sleeptracker.schema.RecordDao;
 import com.og.health.sleeptracker.schema.SleepMovementDao;
 import com.og.health.sleeptracker.schema.WakeUpDao;
 
@@ -20,12 +21,14 @@ public class DaoMaster extends AbstractDaoMaster {
 
     /** Creates underlying database table using DAOs. */
     public static void createAllTables(SQLiteDatabase db, boolean ifNotExists) {
+        RecordDao.createTable(db, ifNotExists);
         SleepMovementDao.createTable(db, ifNotExists);
         WakeUpDao.createTable(db, ifNotExists);
     }
     
     /** Drops underlying database table using DAOs. */
     public static void dropAllTables(SQLiteDatabase db, boolean ifExists) {
+        RecordDao.dropTable(db, ifExists);
         SleepMovementDao.dropTable(db, ifExists);
         WakeUpDao.dropTable(db, ifExists);
     }
@@ -59,6 +62,7 @@ public class DaoMaster extends AbstractDaoMaster {
 
     public DaoMaster(SQLiteDatabase db) {
         super(db, SCHEMA_VERSION);
+        registerDaoClass(RecordDao.class);
         registerDaoClass(SleepMovementDao.class);
         registerDaoClass(WakeUpDao.class);
     }

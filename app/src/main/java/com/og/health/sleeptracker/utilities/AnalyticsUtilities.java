@@ -17,7 +17,7 @@ package com.og.health.sleeptracker.utilities;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.og.health.sleeptracker.BuildConfig;
-import com.og.health.sleeptracker.application.SleepTrackerApplication;
+import com.og.health.sleeptracker.application.ExampleApplication;
 
 /**
  * Created by olivier.goutay on 2/25/16.
@@ -32,7 +32,7 @@ public final class AnalyticsUtilities {
      */
     public static void trackEvent(String category, String action) {
         if (!BuildConfig.DEBUG) {
-            SleepTrackerApplication.getDefaultTracker().send(new HitBuilders.EventBuilder()
+            ExampleApplication.getDefaultTracker().send(new HitBuilders.EventBuilder()
                     .setCategory(category)
                     .setAction(action)
                     .build());

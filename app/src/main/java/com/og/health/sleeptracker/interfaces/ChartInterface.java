@@ -16,11 +16,14 @@
 package com.og.health.sleeptracker.interfaces;
 
 import com.github.mikephil.charting.data.Entry;
+import com.og.health.sleeptracker.activities.WakeUpChartActivity;
+import com.og.health.sleeptracker.adapters.SleepChartAdapter;
 import com.og.health.sleeptracker.charts.ChartValue;
+import com.og.health.sleeptracker.schema.Record;
 
 /**
  * Created by olivier.goutay on 2/18/16.
- * Allows {@link com.og.health.sleeptracker.activities.ChartActivity} to get back the list of {@link Entry}
+ * Allows {@link WakeUpChartActivity} to get back the list of {@link Entry}
  */
 public interface ChartInterface {
 
@@ -32,5 +35,5 @@ public interface ChartInterface {
     /**
      * Allows to get back the Sleep Chart values
      */
-    public void onSleepChartValuesRetrieved(ChartValue chartValue);
+    public void onSleepChartValuesRetrieved(Record record, SleepChartAdapter.ViewHolder viewHolder, ChartValue chartValue);
 }

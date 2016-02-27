@@ -20,8 +20,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.og.health.sleeptracker.lib.db.SleepTrackerDatabaseUtilities;
 import com.og.health.sleeptracker.lib.db.AbstractSleepTrackerDatabase;
+import com.og.health.sleeptracker.lib.db.SleepTrackerDatabaseImpl;
 import com.og.health.sleeptracker.lib.utilities.SharedPreferencesUtilities;
 
 import java.util.Calendar;
@@ -62,10 +62,8 @@ public class ScreenOnOffReceiver extends BroadcastReceiver {
             Log.d(TAG, "Screen on received");
 
             if (hasPersonSlept(context)) {
-                AbstractSleepTrackerDatabase abstractSleepTrackerDatabase = SleepTrackerDatabaseUtilities.getDatabaseClass(context);
-                if (abstractSleepTrackerDatabase != null) {
-                    abstractSleepTrackerDatabase.storeDeviceWakeUpTime();
-                }
+                AbstractSleepTrackerDatabase abstractSleepTrackerDatabase = new SleepTrackerDatabaseImpl();
+                abstractSleepTrackerDatabase.storeDeviceWakeUpTime();
             }
         }
     }

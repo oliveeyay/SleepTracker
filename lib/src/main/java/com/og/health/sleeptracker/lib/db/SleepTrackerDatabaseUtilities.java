@@ -15,47 +15,51 @@
  */
 package com.og.health.sleeptracker.lib.db;
 
-import android.content.Context;
-import android.util.Log;
-
-import com.og.health.sleeptracker.lib.utilities.SharedPreferencesUtilities;
+import java.security.SecureRandom;
 
 /**
  * Created by olivier.goutay on 2/17/16.
  * Allows to set and get the {@link AbstractSleepTrackerDatabase} implemented by the main app.
  */
-public class SleepTrackerDatabaseUtilities {
+public class SleepTrackerDatabaseUtilities extends com.og.health.sleeptracker.lib.utilities.SharedPreferencesUtilities {
 
     private static final String TAG = "AbstractSleepTrackerSer";
 
     /**
-     * Allows to set the database class that is gonna be use in {@link com.og.health.sleeptracker.lib.services.SleepTrackerService}
-     * and {@link com.og.health.sleeptracker.lib.services.ScreenOnOffService} to store the data persistently.
-     *
-     * @param dbClass The class that implements {@link AbstractSleepTrackerDatabase}.
+     * The length of the pseudo random constructed string
      */
-    public static void setDatabaseClass(Context context, Class<? extends AbstractSleepTrackerDatabase> dbClass) {
-        SharedPreferencesUtilities.storeStringForKey(context, SharedPreferencesUtilities.SLEEP_TRACKER_DATABASE_IMPL_CLASS, dbClass.getCanonicalName());
-    }
+    private static final int SEED_LENGTH = 64;
 
     /**
-     * Returns the implementation of {@link AbstractSleepTrackerDatabase} in order to store the data.
-     *
-     * @return The main app class extending {@link AbstractSleepTrackerDatabase}
+     * The space used by {@link java.util.Random#nextInt(int)}
      */
-    public static AbstractSleepTrackerDatabase getDatabaseClass(Context context) {
-        try {
-            String className = SharedPreferencesUtilities.getStringForKey(context, SharedPreferencesUtilities.SLEEP_TRACKER_DATABASE_IMPL_CLASS);
+    private static final int SEED_SPACE = 96;
 
-            if (className != null) {
-                Class<?> clazz = Class.forName(className);
-                return (AbstractSleepTrackerDatabase) clazz.newInstance();
+    /**
+     * The key to save the seed in SharedPreferences (private mode, internal system storage)
+     */
+    public static final String SEED_KEY = "SLEEP_TRACKER_SEED_KEY";
+
+    /**
+     * Generate a random string (used for database encryption)
+     *
+     * @return a random string of 64 characters
+     */
+    public static String generateRandomString() {
+        SecureRandom generator = new SecureRandom();
+        StringBuilder randomStringBuilder = new StringBuilder();
+        char tempChar;
+        int numbChar = 0;
+        while (numbChar < SEED_LENGTH) {
+            tempChar = (char) (generator.nextInt(SEED_SPACE) + 32);
+            boolean num = tempChar >= 48 && tempChar < 58;//0-9
+            boolean cap = tempChar >= 65 && tempChar < 91;//A-Z
+            boolean lower = tempChar >= 65 && tempChar < 91;//a-z
+            if (num || cap || lower) {
+                randomStringBuilder.append(tempChar);
+                numbChar++;
             }
-        } catch (Exception e) {
-            Log.e(TAG, "An Exception happened during AbstractSleepTrackerService#getDatabaseClass()");
         }
-        Log.e(TAG, SharedPreferencesUtilities.SLEEP_TRACKER_DATABASE_IMPL_CLASS + " is not defined");
-
-        return null;
+        return randomStringBuilder.toString();
     }
 }

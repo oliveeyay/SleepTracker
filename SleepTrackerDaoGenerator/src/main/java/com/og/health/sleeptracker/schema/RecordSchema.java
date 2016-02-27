@@ -16,13 +16,23 @@
 package com.og.health.sleeptracker.schema;
 
 import de.greenrobot.daogenerator.Entity;
+import de.greenrobot.daogenerator.Property;
+import de.greenrobot.daogenerator.ToMany;
 
 /**
  *
  */
-public class SleepMovementSchema extends AbstractSchema {
+public class RecordSchema extends AbstractSchema {
 
-    public static final String SCHEMA_KEY = "SleepMovement";
+    //Record
+    public static final String SCHEMA_RECORD_KEY = "Record";
+    public static final String BEGINNING = "beginning";
+    public static final String ENDING = "ending";
+
+    //Sleep movement
+    public static final String SCHEMA_SLEEP_MOVEMENT_KEY = "SleepMovement";
+    public static final String RECORD_ID = "recordId";
+    public static final String RECORD_NAME = "sleepMovements";
     public static final String MOVEMENT_TIME = "movementTime";
     public static final String MOVEMENT_X = "movementX";
     public static final String MOVEMENT_Y = "movementY";
@@ -30,11 +40,23 @@ public class SleepMovementSchema extends AbstractSchema {
 
     @Override
     public void setSchemaProperties() {
-        Entity sleepMovement = mSchema.addEntity(SCHEMA_KEY);
+        //Record
+        Entity record = mSchema.addEntity(SCHEMA_RECORD_KEY);
+        record.addIdProperty().autoincrement();
+        record.addDateProperty(BEGINNING).unique();
+        record.addDateProperty(ENDING).unique();
+
+        //Sleep movement
+        Entity sleepMovement = mSchema.addEntity(SCHEMA_SLEEP_MOVEMENT_KEY);
         sleepMovement.addIdProperty().autoincrement();
         sleepMovement.addDateProperty(MOVEMENT_TIME).unique();
         sleepMovement.addFloatProperty(MOVEMENT_X);
         sleepMovement.addFloatProperty(MOVEMENT_Y);
         sleepMovement.addFloatProperty(MOVEMENT_Z);
+
+        //A sleep movement is linked to a record
+        Property recordId = sleepMovement.addLongProperty(RECORD_ID).notNull().getProperty();
+        ToMany recordToSleepMovements = record.addToMany(sleepMovement, recordId);
+        recordToSleepMovements.setName(RECORD_NAME);
     }
 }

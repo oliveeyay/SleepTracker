@@ -1,3 +1,13 @@
 <resources>
+    <!-- Main -->
     <string name="app_name">SleepTracker</string>
+    <string name="activity_main_start_button">Start</string>
+    <string name="activity_main_sleep_button">Sleep Chart</string>
+    <string name="activity_main_wake_up_button">WakeUp Chart</string>
+
+    <!-- Sleep -->
+
+    <!-- Wake up -->
+    <string name="activity_wake_up_title">Wake up chart</string>
+
 </resources>

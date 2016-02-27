@@ -11,6 +11,7 @@ public class SleepMovement {
     private Float movementX;
     private Float movementY;
     private Float movementZ;
+    private long recordId;
 
     public SleepMovement() {
     }
@@ -19,12 +20,13 @@ public class SleepMovement {
         this.id = id;
     }
 
-    public SleepMovement(Long id, java.util.Date movementTime, Float movementX, Float movementY, Float movementZ) {
+    public SleepMovement(Long id, java.util.Date movementTime, Float movementX, Float movementY, Float movementZ, long recordId) {
         this.id = id;
         this.movementTime = movementTime;
         this.movementX = movementX;
         this.movementY = movementY;
         this.movementZ = movementZ;
+        this.recordId = recordId;
     }
 
     public Long getId() {
@@ -65,6 +67,14 @@ public class SleepMovement {
 
     public void setMovementZ(Float movementZ) {
         this.movementZ = movementZ;
+    }
+
+    public long getRecordId() {
+        return recordId;
+    }
+
+    public void setRecordId(long recordId) {
+        this.recordId = recordId;
     }
 
 }

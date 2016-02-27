@@ -1,6 +1,6 @@
 package com.og.health.sleeptracker;
 
-import com.og.health.sleeptracker.schema.SleepMovementSchema;
+import com.og.health.sleeptracker.schema.RecordSchema;
 import com.og.health.sleeptracker.schema.WakeUpSchema;
 
 import de.greenrobot.daogenerator.DaoGenerator;
@@ -24,7 +24,7 @@ public class DatabaseGenerator {
     }
 
     public static Schema getSchema(){
-        SleepMovementSchema sleepMovementSchema = new SleepMovementSchema();
+        RecordSchema recordSchema = new RecordSchema();
         WakeUpSchema wakeUpSchema = new WakeUpSchema();
         return wakeUpSchema.getSchema();
     }

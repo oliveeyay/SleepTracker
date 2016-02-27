@@ -18,7 +18,7 @@ package com.og.health.sleeptracker.charts;
 import android.os.AsyncTask;
 
 import com.github.mikephil.charting.data.Entry;
-import com.og.health.sleeptracker.application.SleepTrackerApplication;
+import com.og.health.sleeptracker.lib.application.SleepTrackerApplication;
 import com.og.health.sleeptracker.interfaces.ChartInterface;
 import com.og.health.sleeptracker.schema.WakeUp;
 import com.og.health.sleeptracker.schema.WakeUpDao;
@@ -46,7 +46,7 @@ public class GetWakeUpChartValuesTask extends AsyncTask<Void, Void, ChartValue> 
     @Override
     protected ChartValue doInBackground(Void... params) {
         WakeUpDao wakeUpDao = SleepTrackerApplication.getDaoSession().getWakeUpDao();
-        List<WakeUp> wakeUps = wakeUpDao.loadAll();
+        List<WakeUp> wakeUps = wakeUpDao.queryBuilder().orderAsc(WakeUpDao.Properties.WakeUpTime).list();
 
         List<Entry> entries = new ArrayList<>();
         List<String> xValues = new ArrayList<>();
@@ -63,7 +63,7 @@ public class GetWakeUpChartValuesTask extends AsyncTask<Void, Void, ChartValue> 
             float wakeUpTimeInFloat = ((float) calendar.get(Calendar.HOUR_OF_DAY)) + ((float) calendar.get(Calendar.MINUTE)) / 60.0f;
             entries.add(new Entry(wakeUpTimeInFloat, i));
 
-            xValues.add(DateUtilities.dateToString(date, DateUtilities.DATE_SHORT_MONTH_DAY_HOUR_MINUTE_STRING_FORMAT));
+            xValues.add(DateUtilities.dateToString(date, DateUtilities.DATE_SHORT_HOUR_MINUTE_STRING_FORMAT));
 
             i++;
         }

@@ -4,7 +4,7 @@ project(':SleepTrackerDaoGenerator') {
 
     mainClassName = "com.og.health.sleeptracker.DatabaseGenerator"
     // edit output direction
-    def outputDir = "../app/src/main/java-gen"
+    def outputDir = "../lib/src/main/java-gen"
 
     repositories {
         mavenCentral()

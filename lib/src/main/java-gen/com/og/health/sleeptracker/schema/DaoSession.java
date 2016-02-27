@@ -9,9 +9,11 @@ import de.greenrobot.dao.AbstractDaoSession;
 import de.greenrobot.dao.identityscope.IdentityScopeType;
 import de.greenrobot.dao.internal.DaoConfig;
 
+import com.og.health.sleeptracker.schema.Record;
 import com.og.health.sleeptracker.schema.SleepMovement;
 import com.og.health.sleeptracker.schema.WakeUp;
 
+import com.og.health.sleeptracker.schema.RecordDao;
 import com.og.health.sleeptracker.schema.SleepMovementDao;
 import com.og.health.sleeptracker.schema.WakeUpDao;
 
@@ -24,9 +26,11 @@ import com.og.health.sleeptracker.schema.WakeUpDao;
  */
 public class DaoSession extends AbstractDaoSession {
 
+    private final DaoConfig recordDaoConfig;
     private final DaoConfig sleepMovementDaoConfig;
     private final DaoConfig wakeUpDaoConfig;
 
+    private final RecordDao recordDao;
     private final SleepMovementDao sleepMovementDao;
     private final WakeUpDao wakeUpDao;
 
@@ -34,22 +38,32 @@ public class DaoSession extends AbstractDaoSession {
             daoConfigMap) {
         super(db);
 
+        recordDaoConfig = daoConfigMap.get(RecordDao.class).clone();
+        recordDaoConfig.initIdentityScope(type);
+
         sleepMovementDaoConfig = daoConfigMap.get(SleepMovementDao.class).clone();
         sleepMovementDaoConfig.initIdentityScope(type);
 
         wakeUpDaoConfig = daoConfigMap.get(WakeUpDao.class).clone();
         wakeUpDaoConfig.initIdentityScope(type);
 
+        recordDao = new RecordDao(recordDaoConfig, this);
         sleepMovementDao = new SleepMovementDao(sleepMovementDaoConfig, this);
         wakeUpDao = new WakeUpDao(wakeUpDaoConfig, this);
 
+        registerDao(Record.class, recordDao);
         registerDao(SleepMovement.class, sleepMovementDao);
         registerDao(WakeUp.class, wakeUpDao);
     }
     
     public void clear() {
+        recordDaoConfig.getIdentityScope().clear();
         sleepMovementDaoConfig.getIdentityScope().clear();
         wakeUpDaoConfig.getIdentityScope().clear();
+    }
+
+    public RecordDao getRecordDao() {
+        return recordDao;
     }
 
     public SleepMovementDao getSleepMovementDao() {

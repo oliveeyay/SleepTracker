@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.og.health.sleeptracker.db;
+package com.og.health.sleeptracker.lib.db;
 
-import com.og.health.sleeptracker.application.SleepTrackerApplication;
-import com.og.health.sleeptracker.lib.db.AbstractSleepTrackerDatabase;
+import com.og.health.sleeptracker.lib.application.SleepTrackerApplication;
+import com.og.health.sleeptracker.schema.Record;
 import com.og.health.sleeptracker.schema.SleepMovement;
 import com.og.health.sleeptracker.schema.SleepMovementDao;
 import com.og.health.sleeptracker.schema.WakeUp;
@@ -31,13 +31,13 @@ import java.util.Date;
 public class SleepTrackerDatabaseImpl extends AbstractSleepTrackerDatabase {
 
     @Override
-    public void storeSleepMovementData(float[] values) {
+    public void storeSleepMovementData(Record record, float[] values) {
         if (values.length >= 3) {
             SleepTrackerApplication.setupDatabase(SleepTrackerApplication.getContext());
 
-            if (SleepTrackerApplication.getDaoSession() != null) {
+            if (SleepTrackerApplication.getDaoSession() != null && record != null && record.getId() != null) {
                 SleepMovementDao sleepMovementDao = SleepTrackerApplication.getDaoSession().getSleepMovementDao();
-                sleepMovementDao.insertOrReplace(new SleepMovement(null, new Date(), values[0], values[1], values[2]));
+                sleepMovementDao.insertOrReplace(new SleepMovement(null, new Date(), values[0], values[1], values[2], record.getId()));
             }
         }
     }

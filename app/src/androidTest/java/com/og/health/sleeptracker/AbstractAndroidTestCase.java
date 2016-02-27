@@ -4,7 +4,7 @@ import android.content.Context;
 import android.test.AndroidTestCase;
 import android.util.Log;
 
-import com.og.health.sleeptracker.application.SleepTrackerApplication;
+import com.og.health.sleeptracker.lib.application.SleepTrackerApplication;
 import com.og.health.sleeptracker.lib.utilities.SharedPreferencesUtilities;
 import com.og.health.sleeptracker.schema.DaoSession;
 
@@ -16,6 +16,8 @@ import com.og.health.sleeptracker.schema.DaoSession;
 public class AbstractAndroidTestCase extends AndroidTestCase {
 
     private static final String TAG = "AbstractAndroidTestCase";
+
+    public boolean mResetDbOnTearDown = true;
 
     public DaoSession dao;
 
@@ -40,15 +42,18 @@ public class AbstractAndroidTestCase extends AndroidTestCase {
     protected void tearDown() throws Exception {
         super.tearDown();
 
-        resetDatabaseAndPrefs();
+        if (mResetDbOnTearDown) {
+            resetDatabaseAndPrefs();
+        }
     }
 
     /**
      * Reset the {@link DaoSession} and the {@link SharedPreferencesUtilities}
      */
-    private void resetDatabaseAndPrefs() {
+    protected void resetDatabaseAndPrefs() {
         dao.getWakeUpDao().deleteAll();
         dao.getSleepMovementDao().deleteAll();
+        dao.getRecordDao().deleteAll();
         SharedPreferencesUtilities.deleteKey(getContext(), SharedPreferencesUtilities.SLEEP_TRACKER_SCREEN_OFF_TIME);
     }
 

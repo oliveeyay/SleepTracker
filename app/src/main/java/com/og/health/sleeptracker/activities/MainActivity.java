@@ -50,10 +50,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Launches {@link ChartActivity} on click {@link com.og.health.sleeptracker.databinding.ActivityMainBinding#mainActivityWakeupButton}
+     * Launches {@link WakeUpChartActivity} on click {@link com.og.health.sleeptracker.databinding.ActivityMainBinding#mainActivitySleepChartButton}
+     */
+    public void sleepChart(View view) {
+        Intent intent = new Intent(this, SleepChartActivity.class);
+        startActivity(intent);
+    }
+
+    /**
+     * Launches {@link WakeUpChartActivity} on click {@link com.og.health.sleeptracker.databinding.ActivityMainBinding#mainActivityWakeupChartButton}
      */
     public void wakeUpChart(View view) {
-        Intent intent = new Intent(this, ChartActivity.class);
+        Intent intent = new Intent(this, WakeUpChartActivity.class);
         startActivity(intent);
     }
 

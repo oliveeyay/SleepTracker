@@ -19,16 +19,25 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:onClick="startDimActivity"
-            android:text="Start" />
+            android:text="@string/activity_main_start_button" />
 
         <Button
-            android:id="@+id/main_activity_wakeup_button"
+            android:id="@+id/main_activity_sleep_chart_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/main_activity_start_button"
             android:layout_centerHorizontal="true"
+            android:onClick="sleepChart"
+            android:text="@string/activity_main_sleep_button" />
+
+        <Button
+            android:id="@+id/main_activity_wakeup_chart_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/main_activity_sleep_chart_button"
+            android:layout_centerHorizontal="true"
             android:onClick="wakeUpChart"
-            android:text="WakeUp Chart" />
+            android:text="@string/activity_main_wake_up_button" />
 
     </RelativeLayout>
 </layout>

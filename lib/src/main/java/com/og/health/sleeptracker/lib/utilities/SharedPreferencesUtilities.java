@@ -29,9 +29,9 @@ public class SharedPreferencesUtilities {
     public static final String SHARED_PREFERENCES = "SLEEP_TRACKER_SEED_SHARED_PREFERENCES";
 
     /**
-     * Allows to store the class that is gonna handle the database storage of the sleep data
+     * The key to save the previous dim value
      */
-    public static final String SLEEP_TRACKER_DATABASE_IMPL_CLASS = "SLEEP_TRACKER_DATABASE_IMPL_CLASS";
+    public static final String SCREEN_DIM_VALUE = "SCREEN_DIM_VALUE";
 
     /**
      * Allows to store the last time the screen was {@link android.content.Intent#ACTION_SCREEN_OFF}

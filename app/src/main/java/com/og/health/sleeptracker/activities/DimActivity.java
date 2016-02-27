@@ -13,9 +13,14 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.og.health.sleeptracker.R;
+import com.og.health.sleeptracker.application.ExampleApplication;
 import com.og.health.sleeptracker.databinding.ActivityDimBinding;
 import com.og.health.sleeptracker.lib.services.SleepTrackerService;
-import com.og.health.sleeptracker.utilities.SharedPreferencesUtils;
+import com.og.health.sleeptracker.lib.utilities.SharedPreferencesUtilities;
+import com.og.health.sleeptracker.schema.Record;
+import com.og.health.sleeptracker.schema.RecordDao;
+
+import java.util.Date;
 
 /**
  * Created by olivier.goutay on 2/25/16.
@@ -72,6 +77,11 @@ public class DimActivity extends AppCompatActivity implements GestureDetector.On
      * Start the {@link SleepTrackerService} on {@link #onCreate(Bundle)}
      */
     public void startService() {
+        //Create a record in db
+        RecordDao recordDao = ExampleApplication.getDaoSession().getRecordDao();
+        recordDao.insertOrReplace(new Record(null, new Date(), new Date()));
+
+        //Launch service
         Intent intent = new Intent(this, SleepTrackerService.class);
         startService(intent);
     }
@@ -80,8 +90,17 @@ public class DimActivity extends AppCompatActivity implements GestureDetector.On
      * Stop the {@link SleepTrackerService} on {@link #onStop()}
      */
     public void stopService() {
+        //TODO wakeup screen?
+
+        //Stop the service
         Intent intent = new Intent(this, SleepTrackerService.class);
         stopService(intent);
+
+        //End the record in db
+        RecordDao recordDao = ExampleApplication.getDaoSession().getRecordDao();
+        Record record = recordDao.queryBuilder().limit(1).orderDesc(RecordDao.Properties.Beginning).unique();
+        record.setEnding(new Date());
+        recordDao.insertOrReplace(record);
     }
 
     /**
@@ -105,7 +124,7 @@ public class DimActivity extends AppCompatActivity implements GestureDetector.On
             WindowManager.LayoutParams wm = getWindow().getAttributes();
 
             //Store the previous dim for future use
-            SharedPreferencesUtils.storeFloatForKey(this, SharedPreferencesUtils.SCREEN_DIM_VALUE, wm.screenBrightness);
+            SharedPreferencesUtilities.storeFloatForKey(this, SharedPreferencesUtilities.SCREEN_DIM_VALUE, wm.screenBrightness);
 
             //Apply new dim
             wm.screenBrightness = 0.0f;
@@ -121,7 +140,7 @@ public class DimActivity extends AppCompatActivity implements GestureDetector.On
             WindowManager.LayoutParams wm = getWindow().getAttributes();
 
             //Store the previous dim for future use
-            float previousDim = SharedPreferencesUtils.getFloatForKey(this, SharedPreferencesUtils.SCREEN_DIM_VALUE);
+            float previousDim = SharedPreferencesUtilities.getFloatForKey(this, SharedPreferencesUtilities.SCREEN_DIM_VALUE);
             previousDim = previousDim == 0f ? 1f : previousDim;
 
             //Apply new dim

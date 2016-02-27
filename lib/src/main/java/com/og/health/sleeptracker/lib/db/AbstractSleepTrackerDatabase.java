@@ -17,6 +17,8 @@ package com.og.health.sleeptracker.lib.db;
 
 import android.hardware.SensorEvent;
 
+import com.og.health.sleeptracker.schema.Record;
+
 /**
  * Created by olivier.goutay on 2/17/16.
  */
@@ -25,7 +27,7 @@ public abstract class AbstractSleepTrackerDatabase {
     /**
      * Interface to store the movements detected by {@link com.og.health.sleeptracker.lib.services.SleepTrackerService#onSensorChanged(SensorEvent)}
      */
-    public abstract void storeSleepMovementData(float[] values);
+    public abstract void storeSleepMovementData(Record record, float[] values);
 
     /**
      * Interface to store the device wake up event detected by {@link com.og.health.sleeptracker.lib.receivers.ScreenOnOffReceiver}

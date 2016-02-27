@@ -11,21 +11,7 @@
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
-        tools:context=".activities.ChartActivity">
-
-        <TextView
-            android:id="@+id/sleep_chart_activity_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:text="Sleep chart" />
-
-        <com.og.health.sleeptracker.views.ProgressLineChartView
-            android:id="@+id/sleep_chart_activity_linechart"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:layout_below="@+id/sleep_chart_activity_textview"
-            android:layout_centerInParent="true" />
+        tools:context=".activities.WakeUpChartActivity">
 
         <TextView
             android:id="@+id/wakeup_chart_activity_textview"
@@ -33,12 +19,12 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/sleep_chart_activity_linechart"
             android:layout_centerHorizontal="true"
-            android:text="Wake up chart" />
+            android:text="@string/activity_wake_up_title" />
 
         <com.og.health.sleeptracker.views.ProgressLineChartView
             android:id="@+id/wakeup_chart_activity_linechart"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="@dimen/activity_chart_wake_up_chart_height"
             android:layout_below="@+id/wakeup_chart_activity_textview"
             android:layout_centerInParent="true" />
     </RelativeLayout>

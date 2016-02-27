@@ -1,5 +1,6 @@
 package com.og.health.sleeptracker.schema;
 
+import java.util.List;
 import net.sqlcipher.Cursor;
 import net.sqlcipher.database.SQLiteDatabase;
 import net.sqlcipher.database.SQLiteStatement;
@@ -7,6 +8,8 @@ import net.sqlcipher.database.SQLiteStatement;
 import de.greenrobot.dao.AbstractDao;
 import de.greenrobot.dao.Property;
 import de.greenrobot.dao.internal.DaoConfig;
+import de.greenrobot.dao.query.Query;
+import de.greenrobot.dao.query.QueryBuilder;
 
 import com.og.health.sleeptracker.schema.SleepMovement;
 
@@ -28,8 +31,10 @@ public class SleepMovementDao extends AbstractDao<SleepMovement, Long> {
         public final static Property MovementX = new Property(2, Float.class, "movementX", false, "MOVEMENT_X");
         public final static Property MovementY = new Property(3, Float.class, "movementY", false, "MOVEMENT_Y");
         public final static Property MovementZ = new Property(4, Float.class, "movementZ", false, "MOVEMENT_Z");
+        public final static Property RecordId = new Property(5, long.class, "recordId", false, "RECORD_ID");
     };
 
+    private Query<SleepMovement> record_SleepMovementsQuery;
 
     public SleepMovementDao(DaoConfig config) {
         super(config);
@@ -47,7 +52,8 @@ public class SleepMovementDao extends AbstractDao<SleepMovement, Long> {
                 "\"MOVEMENT_TIME\" INTEGER UNIQUE ," + // 1: movementTime
                 "\"MOVEMENT_X\" REAL," + // 2: movementX
                 "\"MOVEMENT_Y\" REAL," + // 3: movementY
-                "\"MOVEMENT_Z\" REAL);"); // 4: movementZ
+                "\"MOVEMENT_Z\" REAL," + // 4: movementZ
+                "\"RECORD_ID\" INTEGER NOT NULL );"); // 5: recordId
     }
 
     /** Drops the underlying database table. */
@@ -85,6 +91,7 @@ public class SleepMovementDao extends AbstractDao<SleepMovement, Long> {
         if (movementZ != null) {
             stmt.bindDouble(5, movementZ);
         }
+        stmt.bindLong(6, entity.getRecordId());
     }
 
     /** @inheritdoc */
@@ -101,7 +108,8 @@ public class SleepMovementDao extends AbstractDao<SleepMovement, Long> {
             cursor.isNull(offset + 1) ? null : new java.util.Date(cursor.getLong(offset + 1)), // movementTime
             cursor.isNull(offset + 2) ? null : cursor.getFloat(offset + 2), // movementX
             cursor.isNull(offset + 3) ? null : cursor.getFloat(offset + 3), // movementY
-            cursor.isNull(offset + 4) ? null : cursor.getFloat(offset + 4) // movementZ
+            cursor.isNull(offset + 4) ? null : cursor.getFloat(offset + 4), // movementZ
+            cursor.getLong(offset + 5) // recordId
         );
         return entity;
     }
@@ -114,6 +122,7 @@ public class SleepMovementDao extends AbstractDao<SleepMovement, Long> {
         entity.setMovementX(cursor.isNull(offset + 2) ? null : cursor.getFloat(offset + 2));
         entity.setMovementY(cursor.isNull(offset + 3) ? null : cursor.getFloat(offset + 3));
         entity.setMovementZ(cursor.isNull(offset + 4) ? null : cursor.getFloat(offset + 4));
+        entity.setRecordId(cursor.getLong(offset + 5));
      }
     
     /** @inheritdoc */
@@ -139,4 +148,18 @@ public class SleepMovementDao extends AbstractDao<SleepMovement, Long> {
         return true;
     }
     
+    /** Internal query to resolve the "sleepMovements" to-many relationship of Record. */
+    public List<SleepMovement> _queryRecord_SleepMovements(long recordId) {
+        synchronized (this) {
+            if (record_SleepMovementsQuery == null) {
+                QueryBuilder<SleepMovement> queryBuilder = queryBuilder();
+                queryBuilder.where(Properties.RecordId.eq(null));
+                record_SleepMovementsQuery = queryBuilder.build();
+            }
+        }
+        Query<SleepMovement> query = record_SleepMovementsQuery.forCurrentThread();
+        query.setParameter(0, recordId);
+        return query.list();
+    }
+
 }
