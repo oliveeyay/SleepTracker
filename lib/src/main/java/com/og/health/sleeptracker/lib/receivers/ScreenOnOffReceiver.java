@@ -61,17 +61,27 @@ public class ScreenOnOffReceiver extends BroadcastReceiver {
         } else if (Intent.ACTION_SCREEN_ON.equals(intent.getAction())) {
             Log.d(TAG, "Screen on received");
 
-            if (hasPersonSlept(context)) {
-                AbstractSleepTrackerDatabase abstractSleepTrackerDatabase = new SleepTrackerDatabaseImpl();
-                abstractSleepTrackerDatabase.storeDeviceWakeUpTime();
-            }
+            handleScreenWakeUp(context);
+        }
+    }
+
+    /**
+     * Is gonna call {@link #hasPersonSlept(Context)} to determine if we need to store the data in db.
+     * If yes, then is gonna call {@link AbstractSleepTrackerDatabase#storeDeviceWakeUpTime()}
+     *
+     * @param context The current context of the app
+     */
+    public static void handleScreenWakeUp(Context context) {
+        if (hasPersonSlept(context)) {
+            AbstractSleepTrackerDatabase abstractSleepTrackerDatabase = new SleepTrackerDatabaseImpl();
+            abstractSleepTrackerDatabase.storeDeviceWakeUpTime();
         }
     }
 
     /**
      * Determines if the person has slept depending on the {@link #TIME_TO_SLEEP} threshold.
      */
-    private boolean hasPersonSlept(Context context) {
+    public static boolean hasPersonSlept(Context context) {
         long currentScreenOn = new Date().getTime();
         long lastScreenOff = SharedPreferencesUtilities.getLongForKey(context, SharedPreferencesUtilities.SLEEP_TRACKER_SCREEN_OFF_TIME);
 
@@ -81,7 +91,7 @@ public class ScreenOnOffReceiver extends BroadcastReceiver {
     /**
      * Determines if the current time is between {@link #MIN_WAKE_UP_TIME} and {@link #MAX_WAKE_UP_TIME}
      */
-    private boolean isWithinWakeUpTimeRange() {
+    public static boolean isWithinWakeUpTimeRange() {
         Calendar calendar = Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
 

@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.og.health.sleeptracker.R;
 import com.og.health.sleeptracker.application.ExampleApplication;
 import com.og.health.sleeptracker.databinding.ActivityDimBinding;
+import com.og.health.sleeptracker.lib.receivers.ScreenOnOffReceiver;
 import com.og.health.sleeptracker.lib.services.SleepTrackerService;
 import com.og.health.sleeptracker.lib.utilities.SharedPreferencesUtilities;
 import com.og.health.sleeptracker.schema.Record;
@@ -90,8 +91,6 @@ public class DimActivity extends AppCompatActivity implements GestureDetector.On
      * Stop the {@link SleepTrackerService} on {@link #onStop()}
      */
     public void stopService() {
-        //TODO wakeup screen?
-
         //Stop the service
         Intent intent = new Intent(this, SleepTrackerService.class);
         stopService(intent);
@@ -101,6 +100,9 @@ public class DimActivity extends AppCompatActivity implements GestureDetector.On
         Record record = recordDao.queryBuilder().limit(1).orderDesc(RecordDao.Properties.Beginning).unique();
         record.setEnding(new Date());
         recordDao.insertOrReplace(record);
+
+        //May be a new wake up time
+        ScreenOnOffReceiver.handleScreenWakeUp(ExampleApplication.getContext());
     }
 
     /**
